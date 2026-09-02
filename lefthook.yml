@@ -4,7 +4,7 @@ pre-commit:
     lint:
       root: frontend/
       glob: "*.{js,jsx,ts,tsx}"
-      run: oxlint {staged_files_relative_to_root}
+      run: npm run lint
   format:
     root: frontend/
     glob: "*.{js,jsx,ts,tsx,json,css,md}"
