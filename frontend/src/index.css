@@ -5,3 +5,7 @@
   --font-crimson-text: "Crimson Text", serif;
   --font-figtree: "Figtree", sans-serif;
 }
+
+@utility debug {
+  border: 2px solid red;
+}
