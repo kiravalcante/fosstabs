@@ -1,3 +1,5 @@
+export type Sort = "favorites" | "rating";
+
 export type SearchFormData = {
   query: string;
   instruments: {
@@ -5,5 +7,5 @@ export type SearchFormData = {
     electricGuitar: boolean;
     bass: boolean;
   };
-  sort: "favorites" | "rating";
+  sort: Sort;
 };
