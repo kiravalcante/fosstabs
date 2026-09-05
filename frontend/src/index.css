@@ -9,3 +9,7 @@
 @utility debug {
   border: 2px solid red;
 }
+
+:root {
+  font-family: "Figtree", "Inter", sans-serif;
+}
