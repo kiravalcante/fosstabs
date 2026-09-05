@@ -7,5 +7,5 @@ export const DEFAULT_SEARCH_FORM_DATA: SearchFormData = {
     electricGuitar: true,
     bass: true,
   },
-  sortBy: "favorites",
+  sort: "favorites",
 };

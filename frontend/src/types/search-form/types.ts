@@ -5,5 +5,5 @@ export type SearchFormData = {
     electricGuitar: boolean;
     bass: boolean;
   };
-  sortBy: "favorites" | "rating";
+  sort: "favorites" | "rating";
 };
