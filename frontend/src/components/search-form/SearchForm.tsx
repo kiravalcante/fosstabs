@@ -12,8 +12,6 @@ export function SearchForm() {
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-
-    console.log(searchFormData);
   };
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +65,7 @@ export function SearchForm() {
       <fieldset>
         <legend className="text-2xl font-semibold">Instrument</legend>
 
-        <div className="space-y-1">
+        <div>
           <label className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -104,7 +102,7 @@ export function SearchForm() {
       <fieldset>
         <legend className="text-2xl font-semibold">Sort By</legend>
 
-        <div className="space-y-1">
+        <div>
           <label className="flex items-center gap-2">
             <input
               type="radio"
