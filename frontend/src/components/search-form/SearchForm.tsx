@@ -29,9 +29,11 @@ export function SearchForm({ onSearch }: SearchFormProps) {
   };
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const query = event.currentTarget.value;
+
     setSearchFormData((prev) => ({
       ...prev,
-      query: event.currentTarget.value,
+      query,
     }));
   };
 
