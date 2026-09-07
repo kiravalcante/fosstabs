@@ -1,17 +1,31 @@
 import { useState } from "react";
-import type { ChangeEvent, SubmitEventHandler } from "react";
+import type { ChangeEvent, FormEventHandler } from "react";
 
-import { DEFAULT_SEARCH_FORM_DATA } from "@/defaults/search-form/defaults";
-import type { SearchFormData, Sort } from "@/types/search-form/types";
+import {
+  createDefaultSearchFormData,
+  INSTRUMENT_LABELS,
+  SEARCH_SORT_LABELS,
+} from "@/defaults/search-form/defaults";
+import { INSTRUMENTS, SORT_OPTIONS } from "@/types/search-form/types";
+import type {
+  Instrument,
+  SearchFormProps,
+  Sort,
+} from "@/types/search-form/types";
 
-export function SearchForm() {
-  const [searchFormData, setSearchFormData] = useState<SearchFormData>({
-    ...DEFAULT_SEARCH_FORM_DATA,
-    instruments: { ...DEFAULT_SEARCH_FORM_DATA.instruments },
-  });
+export function SearchForm({ onSearch }: SearchFormProps) {
+  const [searchFormData, setSearchFormData] = useState(
+    createDefaultSearchFormData,
+  );
 
-  const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
+
+    onSearch?.({
+      ...searchFormData,
+      query: searchFormData.query.trim(),
+      instruments: { ...searchFormData.instruments },
+    });
   };
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -21,30 +35,25 @@ export function SearchForm() {
     }));
   };
 
-  const handleInstrumentChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.currentTarget;
-
+  const setInstrument = (instrument: Instrument, checked: boolean) => {
     setSearchFormData((prev) => ({
       ...prev,
       instruments: {
         ...prev.instruments,
-        [name]: checked,
+        [instrument]: checked,
       },
     }));
   };
 
-  const handleSortChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value as Sort;
-
+  const setSort = (sort: Sort) => {
     setSearchFormData((prev) => ({
       ...prev,
-      sort: value,
+      sort,
     }));
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* Query */}
       <div>
         <label htmlFor="query" className="text-2xl font-semibold">
           Search
@@ -56,74 +65,48 @@ export function SearchForm() {
           type="search"
           value={searchFormData.query}
           onChange={handleQueryChange}
-          placeholder="Search..."
+          placeholder="Song, artist, or album"
+          autoComplete="off"
           className="w-full rounded border px-2 py-1"
         />
       </div>
 
-      {/* Instruments */}
       <fieldset>
         <legend className="text-2xl font-semibold">Instrument</legend>
 
         <div>
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="acousticGuitar"
-              checked={searchFormData.instruments.acousticGuitar}
-              onChange={handleInstrumentChange}
-            />
-            Acoustic Guitar
-          </label>
-
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="electricGuitar"
-              checked={searchFormData.instruments.electricGuitar}
-              onChange={handleInstrumentChange}
-            />
-            Electric Guitar
-          </label>
-
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="bass"
-              checked={searchFormData.instruments.bass}
-              onChange={handleInstrumentChange}
-            />
-            Bass
-          </label>
+          {INSTRUMENTS.map((instrument) => (
+            <label key={instrument} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                name={instrument}
+                checked={searchFormData.instruments[instrument]}
+                onChange={(event) =>
+                  setInstrument(instrument, event.currentTarget.checked)
+                }
+              />
+              {INSTRUMENT_LABELS[instrument]}
+            </label>
+          ))}
         </div>
       </fieldset>
 
-      {/* Sort */}
       <fieldset>
         <legend className="text-2xl font-semibold">Sort By</legend>
 
         <div>
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="sort"
-              value="favorites"
-              checked={searchFormData.sort === "favorites"}
-              onChange={handleSortChange}
-            />
-            Favorites
-          </label>
-
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="sort"
-              value="rating"
-              checked={searchFormData.sort === "rating"}
-              onChange={handleSortChange}
-            />
-            Rating
-          </label>
+          {SORT_OPTIONS.map((sort) => (
+            <label key={sort} className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="sort"
+                value={sort}
+                checked={searchFormData.sort === sort}
+                onChange={() => setSort(sort)}
+              />
+              {SEARCH_SORT_LABELS[sort]}
+            </label>
+          ))}
         </div>
       </fieldset>
 
